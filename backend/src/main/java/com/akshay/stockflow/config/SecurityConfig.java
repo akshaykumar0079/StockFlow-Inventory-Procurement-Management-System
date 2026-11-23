@@ -26,6 +26,7 @@ return http.csrf(csrf->csrf.disable()).cors(cors->{}).sessionManagement(s->s.ses
 .requestMatchers(HttpMethod.PATCH,"/api/suppliers/**").hasRole("ADMIN")
 .requestMatchers(HttpMethod.POST,"/api/purchase-orders/*/receive").hasAnyRole("ADMIN","WAREHOUSE")
 .requestMatchers(HttpMethod.POST,"/api/purchase-orders/**").hasAnyRole("ADMIN","PROCUREMENT")
+.requestMatchers(HttpMethod.POST,"/api/warehouse-transfers/**").hasAnyRole("ADMIN","WAREHOUSE")
 .requestMatchers(HttpMethod.GET,"/api/stock-movements/**").hasAnyRole("ADMIN","AUDITOR")
 .anyRequest().authenticated())
 .headers(h->h.frameOptions(fr->fr.sameOrigin())).addFilterBefore(jwt,UsernamePasswordAuthenticationFilter.class).build();
