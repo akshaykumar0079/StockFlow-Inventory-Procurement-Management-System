@@ -1,7 +1,32 @@
 package com.akshay.stockflow.config;
-import com.akshay.stockflow.auth.JwtAuthenticationFilter; import org.springframework.context.annotation.*; import org.springframework.http.HttpMethod; import org.springframework.security.authentication.*; import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration; import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; import org.springframework.security.config.http.SessionCreationPolicy; import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; import org.springframework.security.crypto.password.PasswordEncoder; import org.springframework.security.web.*; import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-@Configuration @EnableMethodSecurity public class SecurityConfig {
+import com.akshay.stockflow.auth.JwtAuthenticationFilter;
+import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.*;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+@Configuration @EnableMethodSecurity
+public class SecurityConfig {
 @Bean PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
 @Bean AuthenticationManager authenticationManager(AuthenticationConfiguration c)throws Exception{return c.getAuthenticationManager();}
-@Bean SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthenticationFilter jwt)throws Exception{return http.csrf(csrf->csrf.disable()).cors(cors->{}).sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).exceptionHandling(e->e.authenticationEntryPoint((req,res,ex)->res.sendError(401,"Authentication required")).accessDeniedHandler((req,res,ex)->res.sendError(403,"Insufficient role"))).authorizeHttpRequests(a->a.requestMatchers("/api/auth/**","/h2-console/**").permitAll().requestMatchers(HttpMethod.POST,"/api/products/**").hasAnyRole("ADMIN","WAREHOUSE").requestMatchers(HttpMethod.PATCH,"/api/products/**").hasAnyRole("ADMIN","WAREHOUSE").requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole("ADMIN").requestMatchers(HttpMethod.POST,"/api/suppliers/**").hasAnyRole("ADMIN","PROCUREMENT").requestMatchers(HttpMethod.PATCH,"/api/suppliers/**").hasRole("ADMIN").requestMatchers(HttpMethod.POST,"/api/purchase-orders/**").hasAnyRole("ADMIN","PROCUREMENT").requestMatchers(HttpMethod.POST,"/api/purchase-orders/*/receive").hasAnyRole("ADMIN","WAREHOUSE").requestMatchers(HttpMethod.GET,"/api/stock-movements/**").hasAnyRole("ADMIN","AUDITOR").anyRequest().authenticated()).headers(h->h.frameOptions(f->f.sameOrigin())).addFilterBefore(jwt,UsernamePasswordAuthenticationFilter.class).build();}
+@Bean SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthenticationFilter jwt)throws Exception{
+return http.csrf(csrf->csrf.disable()).cors(cors->{}).sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+.exceptionHandling(e->e.authenticationEntryPoint((req,res,ex)->res.sendError(401,"Authentication required")).accessDeniedHandler((req,res,ex)->res.sendError(403,"Insufficient role")))
+.authorizeHttpRequests(a->a.requestMatchers("/api/auth/**","/h2-console/**").permitAll()
+.requestMatchers(HttpMethod.POST,"/api/products/**").hasAnyRole("ADMIN","WAREHOUSE")
+.requestMatchers(HttpMethod.PATCH,"/api/products/**").hasAnyRole("ADMIN","WAREHOUSE")
+.requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole("ADMIN")
+.requestMatchers(HttpMethod.POST,"/api/suppliers/**").hasAnyRole("ADMIN","PROCUREMENT")
+.requestMatchers(HttpMethod.PATCH,"/api/suppliers/**").hasRole("ADMIN")
+.requestMatchers(HttpMethod.POST,"/api/purchase-orders/*/receive").hasAnyRole("ADMIN","WAREHOUSE")
+.requestMatchers(HttpMethod.POST,"/api/purchase-orders/**").hasAnyRole("ADMIN","PROCUREMENT")
+.requestMatchers(HttpMethod.GET,"/api/stock-movements/**").hasAnyRole("ADMIN","AUDITOR")
+.anyRequest().authenticated())
+.headers(h->h.frameOptions(fr->fr.sameOrigin())).addFilterBefore(jwt,UsernamePasswordAuthenticationFilter.class).build();
+}
 }
