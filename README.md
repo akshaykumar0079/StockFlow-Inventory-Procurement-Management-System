@@ -13,6 +13,8 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 - Multiple warehouse balances per SKU
 - Transactional warehouse-to-warehouse stock transfers with transfer history
 - Optimistic locking to reduce concurrent stock update conflicts
+- Employee purchase requests with procurement approval/rejection
+- Approval converts a request into a purchase order with reviewer traceability
 - Purchase order creation with line-item pricing and supplier validation
 - Goods receipt workflow that updates stock transactionally
 - Immutable stock movement history for manual adjustments and purchase receipts
@@ -72,7 +74,7 @@ The frontend uses `http://localhost:8080/api` by default. Override it with `VITE
 - Local demo admin: `admin@stockflow.local` / `ChangeMe123!`.
 - Override the initial admin password with `SEED_ADMIN_PASSWORD` before first startup. Override the signing key with a strong base64-encoded `JWT_SECRET` (at least 256 bits) and keep it private. If the admin account already exists, changing the environment variable does not reset its password.
 
-Role access: ADMIN manages all modules; PROCUREMENT creates suppliers and purchase orders; WAREHOUSE manages stock and receives purchase orders; AUDITOR can read stock movement history; EMPLOYEE has read-only access to standard authenticated endpoints.
+Role access: ADMIN manages all modules; PROCUREMENT creates suppliers, approves requests and creates purchase orders; WAREHOUSE manages stock and receives purchase orders; AUDITOR can read stock movement history; EMPLOYEE has read-only access to standard authenticated endpoints.
 
 ## API
 
@@ -88,6 +90,8 @@ Role access: ADMIN manages all modules; PROCUREMENT creates suppliers and purcha
 | GET / POST | `/api/suppliers` | List and create suppliers |
 | PATCH | `/api/suppliers/{id}/status` | Activate or deactivate a supplier |
 | GET / POST | `/api/purchase-orders` | List and create purchase orders |
+| GET / POST | `/api/purchase-requests` | List and submit purchase requests |
+| PATCH | `/api/purchase-requests/{id}/decision` | Approve/reject; approval creates a purchase order |
 | POST | `/api/purchase-orders/{id}/receive` | Receive an order and add ordered units to stock |
 | GET | `/api/stock-movements` | View inventory movement history |
 | GET | `/api/warehouses` | List warehouse names in use |
