@@ -9,6 +9,10 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 - Stock-on-hand tracking and low-stock filtering
 - Reorder thresholds and inventory valuation summary
 - Stock receive/issue adjustments with negative-stock protection
+- Supplier directory with duplicate-email protection and active/inactive status
+- Purchase order creation with line-item pricing and supplier validation
+- Goods receipt workflow that updates stock transactionally
+- Immutable stock movement history for manual adjustments and purchase receipts
 - Add and delete product API operations
 - Responsive dashboard with demo data when the API is unavailable
 - H2 for quick local development; PostgreSQL for Docker Compose
@@ -63,6 +67,11 @@ The frontend uses `http://localhost:8080/api` by default. Override it with `VITE
 | PATCH | `/api/products/{id}/stock` | Receive or issue units with `{"change": 5}` |
 | DELETE | `/api/products/{id}` | Delete a product |
 | GET | `/api/products/summary` | SKU count, units, low-stock count and inventory value |
+| GET / POST | `/api/suppliers` | List and create suppliers |
+| PATCH | `/api/suppliers/{id}/status` | Activate or deactivate a supplier |
+| GET / POST | `/api/purchase-orders` | List and create purchase orders |
+| POST | `/api/purchase-orders/{id}/receive` | Receive an order and add ordered units to stock |
+| GET | `/api/stock-movements` | View inventory movement history |
 
 Example product payload:
 
@@ -80,7 +89,7 @@ Example product payload:
 
 ## Current scope and next milestones
 
-This repository currently implements the inventory catalogue and stock adjustment vertical slice. Supplier management, purchase requests/approvals, purchase orders, goods receiving workflows, authentication/RBAC, warehouse transfers, and audit-log persistence are not yet implemented. Do not use the current demo as a production inventory system until those controls and deployment hardening are completed.
+This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, multi-warehouse transfers, authentication/RBAC, fine-grained permissions, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. Do not expose it to real business data until those controls are implemented.
 
 ## Tests
 
