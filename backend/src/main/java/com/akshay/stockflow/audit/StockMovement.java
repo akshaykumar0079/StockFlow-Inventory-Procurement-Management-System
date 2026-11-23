@@ -1,0 +1,7 @@
+package com.akshay.stockflow.audit;
+import jakarta.persistence.*; import java.time.Instant;
+@Entity @Table(name="stock_movements") public class StockMovement {
+@Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; @Column(nullable=false) private Long productId; @Column(nullable=false) private String sku; @Column(nullable=false) private String warehouse; @Column(nullable=false) private String action; @Column(nullable=false) private int quantityBefore; @Column(nullable=false) private int changeAmount; @Column(nullable=false) private int quantityAfter; private String reference; @Column(nullable=false,updatable=false) private Instant occurredAt=Instant.now();
+protected StockMovement(){} public StockMovement(Long productId,String sku,String warehouse,String action,int before,int change,int after,String reference){this.productId=productId;this.sku=sku;this.warehouse=warehouse;this.action=action;this.quantityBefore=before;this.changeAmount=change;this.quantityAfter=after;this.reference=reference;}
+public Long getId(){return id;} public Long getProductId(){return productId;} public String getSku(){return sku;} public String getWarehouse(){return warehouse;} public String getAction(){return action;} public int getQuantityBefore(){return quantityBefore;} public int getChangeAmount(){return changeAmount;} public int getQuantityAfter(){return quantityAfter;} public String getReference(){return reference;} public Instant getOccurredAt(){return occurredAt;}
+}
