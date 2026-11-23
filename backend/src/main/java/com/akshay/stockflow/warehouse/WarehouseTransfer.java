@@ -1,0 +1,7 @@
+package com.akshay.stockflow.warehouse;
+import jakarta.persistence.*; import java.time.Instant;
+@Entity @Table(name="warehouse_transfers") public class WarehouseTransfer {
+@Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; @Column(nullable=false) private String sku; @Column(nullable=false) private String productName; @Column(nullable=false) private String sourceWarehouse; @Column(nullable=false) private String destinationWarehouse; @Column(nullable=false) private int quantity; @Column(nullable=false) private Long sourceProductId; @Column(nullable=false) private Long destinationProductId; @Column(nullable=false,updatable=false) private Instant transferredAt=Instant.now();
+protected WarehouseTransfer(){} public WarehouseTransfer(String sku,String productName,String source,String destination,int quantity,Long sourceProductId,Long destinationProductId){this.sku=sku;this.productName=productName;this.sourceWarehouse=source;this.destinationWarehouse=destination;this.quantity=quantity;this.sourceProductId=sourceProductId;this.destinationProductId=destinationProductId;}
+public Long getId(){return id;} public String getSku(){return sku;} public String getProductName(){return productName;} public String getSourceWarehouse(){return sourceWarehouse;} public String getDestinationWarehouse(){return destinationWarehouse;} public int getQuantity(){return quantity;} public Long getSourceProductId(){return sourceProductId;} public Long getDestinationProductId(){return destinationProductId;} public Instant getTransferredAt(){return transferredAt;}
+}
