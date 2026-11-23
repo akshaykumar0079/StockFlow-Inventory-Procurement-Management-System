@@ -10,7 +10,7 @@ if(source.getWarehouse().equalsIgnoreCase(input.destinationWarehouse()))throw ne
 if(source.getQuantity()<input.quantity())throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Insufficient stock at source warehouse");
 String destinationName=input.destinationWarehouse().trim();Product destination=products.findBySkuAndWarehouse(source.getSku(),destinationName).orElseGet(()->products.save(new Product(source.getName(),source.getSku(),source.getCategory(),destinationName,0,source.getReorderLevel(),source.getUnitPrice())));
 int sourceBefore=source.getQuantity(),destinationBefore=destination.getQuantity();source.setQuantity(sourceBefore-input.quantity());destination.setQuantity(destinationBefore+input.quantity());products.save(source);products.save(destination);
-movements.save(new StockMovement(source.getId(),source.getSku(),source.getWarehouse(),"TRANSFER_OUT",-input.quantity(),-input.quantity(),source.getQuantity(),"WH-"+destinationName));
+movements.save(new StockMovement(source.getId(),source.getSku(),source.getWarehouse(),"TRANSFER_OUT",sourceBefore,-input.quantity(),source.getQuantity(),"WH-"+destinationName));
 movements.save(new StockMovement(destination.getId(),destination.getSku(),destination.getWarehouse(),"TRANSFER_IN",destinationBefore,input.quantity(),destination.getQuantity(),"WH-"+source.getWarehouse()));
 return transfers.save(new WarehouseTransfer(source.getSku(),source.getName(),source.getWarehouse(),destinationName,input.quantity(),source.getId(),destination.getId()));
 }
