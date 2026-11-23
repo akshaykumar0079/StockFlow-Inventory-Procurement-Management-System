@@ -23,6 +23,8 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 - Self-registration creates restricted EMPLOYEE accounts; only an administrator can grant elevated roles
 - Add and delete product API operations
 - Responsive dashboard with sign-in, role-aware inventory actions, procurement forms and transfer history
+- CSV export for the currently filtered inventory view
+- Administrator team-permissions panel and auditor stock-movement ledger
 - H2 for quick local development; PostgreSQL for Docker Compose
 - GitHub Actions build and test workflow
 
