@@ -1,0 +1,10 @@
+package com.akshay.stockflow.procurement;
+import jakarta.persistence.*; import java.time.Instant; import java.util.*;
+@Entity @Table(name="purchase_requests") public class PurchaseRequest {
+public enum Status { PENDING, APPROVED, REJECTED }
+@Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; @Column(nullable=false) private Long supplierId; @Column(nullable=false) private String supplierName; @Column(nullable=false) private String requestedBy; @Enumerated(EnumType.STRING) @Column(nullable=false) private Status status=Status.PENDING; private String reviewedBy; private String reviewNote; private Long purchaseOrderId; @Column(nullable=false,updatable=false) private Instant createdAt=Instant.now(); private Instant reviewedAt;
+@ElementCollection(fetch=FetchType.EAGER) @CollectionTable(name="purchase_request_lines",joinColumns=@JoinColumn(name="purchase_request_id")) private List<PurchaseRequestLine> lines=new ArrayList<>();
+protected PurchaseRequest(){} public PurchaseRequest(Long supplierId,String supplierName,String requestedBy,List<PurchaseRequestLine> lines){this.supplierId=supplierId;this.supplierName=supplierName;this.requestedBy=requestedBy;this.lines=new ArrayList<>(lines);}
+public Long getId(){return id;} public Long getSupplierId(){return supplierId;} public String getSupplierName(){return supplierName;} public String getRequestedBy(){return requestedBy;} public Status getStatus(){return status;} public String getReviewedBy(){return reviewedBy;} public String getReviewNote(){return reviewNote;} public Long getPurchaseOrderId(){return purchaseOrderId;} public Instant getCreatedAt(){return createdAt;} public Instant getReviewedAt(){return reviewedAt;} public List<PurchaseRequestLine> getLines(){return Collections.unmodifiableList(lines);}
+public void approve(String reviewer,String note,Long orderId){status=Status.APPROVED;reviewedBy=reviewer;reviewNote=note;purchaseOrderId=orderId;reviewedAt=Instant.now();} public void reject(String reviewer,String note){status=Status.REJECTED;reviewedBy=reviewer;reviewNote=note;reviewedAt=Instant.now();}
+}
