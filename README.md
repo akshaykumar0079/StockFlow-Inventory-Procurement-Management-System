@@ -13,6 +13,9 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 - Purchase order creation with line-item pricing and supplier validation
 - Goods receipt workflow that updates stock transactionally
 - Immutable stock movement history for manual adjustments and purchase receipts
+- JWT login, BCrypt password hashing and role-based endpoint authorization
+- Roles: ADMIN, PROCUREMENT, WAREHOUSE, AUDITOR and EMPLOYEE
+- Self-registration creates restricted EMPLOYEE accounts; only an administrator can grant elevated roles
 - Add and delete product API operations
 - Responsive dashboard with demo data when the API is unavailable
 - H2 for quick local development; PostgreSQL for Docker Compose
@@ -21,7 +24,7 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 ## Technology
 
 - **Frontend:** React, TypeScript, Vite, Lucide
-- **Backend:** Java 21, Spring Boot 3, Spring Data JPA, Bean Validation
+- **Backend:** Java 21, Spring Boot 3, Spring Data JPA, Spring Security, JWT and Bean Validation
 - **Database:** H2 (local) / PostgreSQL 16 (Docker)
 - **CI:** GitHub Actions
 
@@ -58,6 +61,16 @@ npm run dev
 
 The frontend uses `http://localhost:8080/api` by default. Override it with `VITE_API_URL`.
 
+## Authentication and roles
+
+- Login: `POST /api/auth/login` with `{"email":"admin@stockflow.local","password":"ChangeMe123!"}` on a fresh local database.
+- Register: `POST /api/auth/register`; public registration always creates the low-privilege `EMPLOYEE` role.
+- Send the returned access token as `Authorization: Bearer <token>` for protected endpoints.
+- Local demo admin: `admin@stockflow.local` / `ChangeMe123!`.
+- Override the initial admin password with `SEED_ADMIN_PASSWORD` before first startup. Override the signing key with a strong base64-encoded `JWT_SECRET` (at least 256 bits) and keep it private. If the admin account already exists, changing the environment variable does not reset its password.
+
+Role access: ADMIN manages all modules; PROCUREMENT creates suppliers and purchase orders; WAREHOUSE manages stock and receives purchase orders; AUDITOR can read stock movement history; EMPLOYEE has read-only access to standard authenticated endpoints.
+
 ## API
 
 | Method | Endpoint | Purpose |
@@ -89,7 +102,7 @@ Example product payload:
 
 ## Current scope and next milestones
 
-This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, multi-warehouse transfers, authentication/RBAC, fine-grained permissions, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. Do not expose it to real business data until those controls are implemented.
+This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, multi-warehouse transfers, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. Do not expose it to real business data until those controls are implemented.
 
 ## Tests
 
