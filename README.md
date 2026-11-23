@@ -20,7 +20,7 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 - Roles: ADMIN, PROCUREMENT, WAREHOUSE, AUDITOR and EMPLOYEE
 - Self-registration creates restricted EMPLOYEE accounts; only an administrator can grant elevated roles
 - Add and delete product API operations
-- Responsive dashboard with demo data when the API is unavailable
+- Responsive dashboard with sign-in, role-aware inventory actions, procurement forms and transfer history
 - H2 for quick local development; PostgreSQL for Docker Compose
 - GitHub Actions build and test workflow
 
@@ -78,6 +78,8 @@ Role access: ADMIN manages all modules; PROCUREMENT creates suppliers and purcha
 
 | Method | Endpoint | Purpose |
 |---|---|---|
+| POST | `/api/auth/register` | Register a restricted EMPLOYEE account |
+| POST | `/api/auth/login` | Obtain a signed JWT access token |
 | GET | `/api/products` | List products; supports `q` and `lowStock=true` |
 | POST | `/api/products` | Create a product |
 | PATCH | `/api/products/{id}/stock` | Receive or issue units with `{"change": 5}` |
