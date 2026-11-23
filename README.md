@@ -10,6 +10,9 @@ StockFlow is a full-stack inventory control starter application. It provides a r
 - Reorder thresholds and inventory valuation summary
 - Stock receive/issue adjustments with negative-stock protection
 - Supplier directory with duplicate-email protection and active/inactive status
+- Multiple warehouse balances per SKU
+- Transactional warehouse-to-warehouse stock transfers with transfer history
+- Optimistic locking to reduce concurrent stock update conflicts
 - Purchase order creation with line-item pricing and supplier validation
 - Goods receipt workflow that updates stock transactionally
 - Immutable stock movement history for manual adjustments and purchase receipts
@@ -85,6 +88,9 @@ Role access: ADMIN manages all modules; PROCUREMENT creates suppliers and purcha
 | GET / POST | `/api/purchase-orders` | List and create purchase orders |
 | POST | `/api/purchase-orders/{id}/receive` | Receive an order and add ordered units to stock |
 | GET | `/api/stock-movements` | View inventory movement history |
+| GET | `/api/warehouses` | List warehouse names in use |
+| GET / POST | `/api/warehouse-transfers` | List transfer history and transfer stock between warehouses |
+| GET / PATCH | `/api/admin/users` | Admin-only user list and role/status updates |
 
 Example product payload:
 
@@ -102,7 +108,7 @@ Example product payload:
 
 ## Current scope and next milestones
 
-This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, multi-warehouse transfers, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. Do not expose it to real business data until those controls are implemented.
+This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, richer warehouse master-data management, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. Do not expose it to real business data until those controls are implemented.
 
 ## Tests
 
