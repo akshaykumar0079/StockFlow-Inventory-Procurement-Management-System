@@ -84,7 +84,7 @@ Role access: ADMIN manages all modules; PROCUREMENT creates suppliers, approves 
 | POST | `/api/auth/login` | Obtain a signed JWT access token |
 | GET | `/api/products` | List products; supports `q` and `lowStock=true` |
 | POST | `/api/products` | Create a product |
-| PATCH | `/api/products/{id}/stock` | Receive or issue units with `{"change": 5}` |
+| PATCH | `/api/products/{id}/stock` | Receive or issue units with `{"change": 5, "reason": "Supplier delivery"}` |
 | DELETE | `/api/products/{id}` | Delete a product |
 | GET | `/api/products/summary` | SKU count, units, low-stock count and inventory value |
 | GET / POST | `/api/suppliers` | List and create suppliers |
