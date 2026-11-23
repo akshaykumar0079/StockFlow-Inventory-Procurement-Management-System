@@ -18,6 +18,8 @@ services:
       DB_URL: jdbc:postgresql://db:5432/stockflow
       DB_USER: stockflow
       DB_PASSWORD: stockflow
+      JWT_SECRET: ${JWT_SECRET:-bXktc3VwZXItc2VjdXJlLXN0b2NrZmxvdy1qd3Qta2V5LTIwMjY=}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-ChangeMe123!}
     ports: ["8080:8080"]
     depends_on:
       db:
