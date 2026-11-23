@@ -35,6 +35,7 @@ Roles: ADMIN, PROCUREMENT, WAREHOUSE, AUDITOR and EMPLOYEE.
 - `GET /api/products`, `POST /api/products`, `PATCH /api/products/{id}/stock`, `DELETE /api/products/{id}`
 - `GET /api/products/summary`
 - `GET /api/suppliers`, `POST /api/suppliers`, `PATCH /api/suppliers/{id}/status`
+- `GET /api/purchase-requests`, `POST /api/purchase-requests`, `PATCH /api/purchase-requests/{id}/decision`
 - `GET /api/purchase-orders`, `POST /api/purchase-orders`, `POST /api/purchase-orders/{id}/receive`
 - `GET /api/warehouses`, `GET /api/warehouse-transfers`, `POST /api/warehouse-transfers`
 - `GET /api/stock-movements`
