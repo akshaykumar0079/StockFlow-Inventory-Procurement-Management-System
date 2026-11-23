@@ -18,6 +18,7 @@ public class SecurityConfig {
 return http.csrf(csrf->csrf.disable()).cors(cors->{}).sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 .exceptionHandling(e->e.authenticationEntryPoint((req,res,ex)->res.sendError(401,"Authentication required")).accessDeniedHandler((req,res,ex)->res.sendError(403,"Insufficient role")))
 .authorizeHttpRequests(a->a.requestMatchers("/api/auth/**","/h2-console/**").permitAll()
+.requestMatchers("/api/admin/**").hasRole("ADMIN")
 .requestMatchers(HttpMethod.POST,"/api/products/**").hasAnyRole("ADMIN","WAREHOUSE")
 .requestMatchers(HttpMethod.PATCH,"/api/products/**").hasAnyRole("ADMIN","WAREHOUSE")
 .requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole("ADMIN")
