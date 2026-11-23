@@ -118,7 +118,7 @@ Example product payload:
 
 ## Current scope and next milestones
 
-This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, richer warehouse master-data management, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. The local default admin password and fallback JWT key are development conveniences only; override both before any shared or deployed use. Do not expose it to real business data until those controls are implemented.
+This repository now implements an inventory catalogue with per-warehouse SKU balances, stock adjustments, supplier management, employee purchase requests with procurement approval, purchase order creation and goods receipt, inter-warehouse transfers, JWT authentication, role-based access, user administration, CSV export, and stock movement audit history. Remaining milestones include richer warehouse master-data management, outbound sales/order fulfilment, notifications, database migration management, and production deployment hardening (managed secrets, TLS, backups, monitoring and operational rate limits). This is a portfolio MVP, not a production-ready ERP. The local default admin password and fallback JWT key are development conveniences only; override both before any shared or deployed use. Do not expose it to real business data until the remaining hardening work is complete.
 
 ## Tests
 
