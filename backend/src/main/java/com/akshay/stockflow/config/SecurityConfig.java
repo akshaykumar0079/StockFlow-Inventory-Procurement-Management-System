@@ -24,6 +24,8 @@ return http.csrf(csrf->csrf.disable()).cors(cors->{}).sessionManagement(s->s.ses
 .requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole("ADMIN")
 .requestMatchers(HttpMethod.POST,"/api/suppliers/**").hasAnyRole("ADMIN","PROCUREMENT")
 .requestMatchers(HttpMethod.PATCH,"/api/suppliers/**").hasRole("ADMIN")
+.requestMatchers(HttpMethod.PATCH,"/api/purchase-requests/**").hasAnyRole("ADMIN","PROCUREMENT")
+.requestMatchers(HttpMethod.POST,"/api/purchase-requests/**").hasAnyRole("ADMIN","PROCUREMENT","EMPLOYEE")
 .requestMatchers(HttpMethod.POST,"/api/purchase-orders/*/receive").hasAnyRole("ADMIN","WAREHOUSE")
 .requestMatchers(HttpMethod.POST,"/api/purchase-orders/**").hasAnyRole("ADMIN","PROCUREMENT")
 .requestMatchers(HttpMethod.POST,"/api/warehouse-transfers/**").hasAnyRole("ADMIN","WAREHOUSE")
