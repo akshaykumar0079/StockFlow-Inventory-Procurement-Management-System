@@ -1,0 +1,8 @@
+package com.akshay.stockflow.auth;
+import org.junit.jupiter.api.Test; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc; import org.springframework.boot.test.context.SpringBootTest; import org.springframework.http.MediaType; import org.springframework.test.web.servlet.MockMvc; import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+@SpringBootTest @AutoConfigureMockMvc class AuthIntegrationTests {
+@Autowired MockMvc mvc;
+@Test void inventoryRequiresAuthentication() throws Exception {mvc.perform(get("/api/products")).andExpect(status().isUnauthorized());}
+@Test void seededAdminCanLoginAndReadInventory() throws Exception {String body=mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"admin@stockflow.local\",\"password\":\"ChangeMe123!\"}")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();String token=new com.fasterxml.jackson.databind.ObjectMapper().readTree(body).get("accessToken").asText();mvc.perform(get("/api/products").header("Authorization","Bearer "+token)).andExpect(status().isOk());}
+@Test void publicRegistrationCannotGrantAdminRole() throws Exception {mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"new.employee@example.test\",\"password\":\"LongPassword123!\",\"fullName\":\"New Employee\",\"role\":\"ADMIN\"}")).andExpect(status().isCreated()).andExpect(jsonPath("$.role").value("EMPLOYEE"));}
+}
