@@ -38,7 +38,7 @@ Requires Docker Desktop / Docker Engine with Compose.
 ```bash
 git clone https://github.com/akshaykumar0079/StockFlow-Inventory-Procurement-Management-System.git
 cd StockFlow-Inventory-Procurement-Management-System
-docker compose up --build
+cp .env.example .env  # set strong JWT_SECRET and SEED_ADMIN_PASSWORD values first\ndocker compose up --build
 ```
 
 - Frontend: http://localhost:5173
@@ -90,7 +90,9 @@ Role access: ADMIN manages all modules; PROCUREMENT creates suppliers and purcha
 | GET | `/api/stock-movements` | View inventory movement history |
 | GET | `/api/warehouses` | List warehouse names in use |
 | GET / POST | `/api/warehouse-transfers` | List transfer history and transfer stock between warehouses |
-| GET / PATCH | `/api/admin/users` | Admin-only user list and role/status updates |
+| GET | `/api/admin/users` | Admin-only user list |
+| PATCH | `/api/admin/users/{id}/role` | Grant an application role |
+| PATCH | `/api/admin/users/{id}/status` | Enable or disable an account |
 
 Example product payload:
 
@@ -108,7 +110,7 @@ Example product payload:
 
 ## Current scope and next milestones
 
-This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, richer warehouse master-data management, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. Do not expose it to real business data until those controls are implemented.
+This repository implements an inventory catalogue, supplier directory, purchase-order creation and receiving, and stock movement history. Purchase request/approval queues, richer warehouse master-data management, and production deployment hardening remain future milestones. The current app is a portfolio MVP, not a production-ready ERP. The local default admin password and fallback JWT key are development conveniences only; override both before any shared or deployed use. Do not expose it to real business data until those controls are implemented.
 
 ## Tests
 
